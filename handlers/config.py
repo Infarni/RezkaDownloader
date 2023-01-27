@@ -1,0 +1,2 @@
+# Media path
+PATH='data'
