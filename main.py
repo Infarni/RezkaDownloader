@@ -5,11 +5,17 @@ from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
-from handlers import config, video, rezka_api
+from handlers import config, rezka_api, video
 
 
 def main():
+    # Create data dir
+    if not os.path.exists(config.PATH):
+        os.mkdir(config.PATH)
+    
     # Create web driver
     driver_options = Options()
     driver_options.add_argument('--disable-gpu')
@@ -17,7 +23,7 @@ def main():
     driver_options.add_argument('--mute-audio')
     driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
-    driver = webdriver.Chrome(options=driver_options)
+    driver = webdriver.Chrome(options=driver_options, service=ChromeService(ChromeDriverManager().install()))
     
     # Main cycle
     while True:
@@ -27,10 +33,6 @@ def main():
         driver.get(url)
         show_name = rezka_api.get_title(driver)
         print(f'Show name: {show_name}')
-        show_path = os.path.join(config.PATH, show_name)
-        # Check show dir exists
-        if not os.path.exists(show_path):
-            os.mkdir(show_path)
        
         # Get transtations
         translations = rezka_api.get_translations_list(driver)
@@ -47,6 +49,11 @@ def main():
         seasons = rezka_api.get_seasons_list(driver)
         # Check seasons exists
         if not seasons is None:
+            show_path = os.path.join(config.PATH, show_name)
+            # Check show dir exists
+            if not os.path.exists(show_path):
+                os.mkdir(show_path)
+
             print('Seasons:')
             for index, season in enumerate(seasons):
                 print(f'{index + 1}. {season}')
