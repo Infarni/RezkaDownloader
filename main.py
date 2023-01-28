@@ -15,7 +15,7 @@ def main():
     driver_options.add_argument('--disable-gpu')
     driver_options.add_argument('--headless=new')
     driver_options.add_argument('--mute-audio')
-    driver_options.add_extension('Ublock Origin.crx')
+    driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
     driver = webdriver.Chrome(options=driver_options)
     
@@ -71,7 +71,6 @@ def main():
         episodes = rezka_api.get_episodes_list(driver)
         # Check episodes exists
         if not episodes is None:
-            number_episodes = len(episodes)
             # Download video cycle
             for index, episode in enumerate(episodes):
                 # Choose episode

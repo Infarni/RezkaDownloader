@@ -45,11 +45,16 @@ def get_episodes_list(driver: selenium.webdriver.Chrome) -> list | None:
     '''
     Get episodes name list
     '''
-    unformat_episodes = driver.find_elements(By.CLASS_NAME, 'b-simple_episode__item')
+    episodes_lists = driver.find_elements(By.CLASS_NAME, 'b-simple_episodes__list')
+    
+    unformat_episodes = []
+    for episodes_list in episodes_lists:
+        if episodes_list.get_attribute('style') != 'display: none;':
+            unformat_episodes = episodes_list.find_elements(By.CLASS_NAME, 'b-simple_episode__item')
     
     if len(unformat_episodes) == 0:
         return None
-    
+
     episodes = []
     
     for episode in unformat_episodes:
@@ -94,6 +99,7 @@ def choose_translate(
     for web_element in web_elements:
         if web_element.text == translate:
             web_element.click()
+            sleep(1)
             return True
     
     return False
@@ -112,6 +118,7 @@ def choose_season(
     for web_element in web_elements:
         if web_element.text == season:
             web_element.click()
+            sleep(1)
             return True
     
     return False
@@ -119,26 +126,29 @@ def choose_season(
 
 def choose_quality(
     driver: selenium.webdriver.Chrome,
-    quality: str='1080p'
+    quality: str='480p'
 ) -> bool:
     '''
     Choose quality
     '''
-    player_block = driver.find_element(By.ID, 'cdnplayer')
-    sleep(1)
-    player_block.find_element(By.XPATH, '//*[@id="oframecdnplayer"]/pjsdiv[15]/pjsdiv[3]').click()
-    sleep(1)
-    driver.find_element(By.XPATH, '//*[@id="cdnplayer_settings"]/pjsdiv/pjsdiv[1]').click()
-    sleep(1)
-    qualitys = player_block.find_elements(By.CSS_SELECTOR, '#cdnplayer_settings > pjsdiv:nth-child(1) > pjsdiv')
-    
-    for el in qualitys:
-        if el.text == quality:
-            el.click()
-            sleep(1)
-            return True
-    
-    return False
+    if quality != '480p':
+        player_block = driver.find_element(By.ID, 'cdnplayer')
+        sleep(1)
+        player_block.find_element(By.XPATH, '//*[@id="oframecdnplayer"]/pjsdiv[15]/pjsdiv[3]').click()
+        sleep(1)
+        driver.find_element(By.XPATH, '//*[@id="cdnplayer_settings"]/pjsdiv/pjsdiv[1]').click()
+        sleep(1)
+        qualitys = player_block.find_elements(By.CSS_SELECTOR, '#cdnplayer_settings > pjsdiv:nth-child(1) > pjsdiv')
+        
+        for el in qualitys:
+            if el.text == quality:
+                el.click()
+                sleep(1)
+                return True
+        
+        return False
+
+    return True
 
 
 def choose_episode(
@@ -149,11 +159,16 @@ def choose_episode(
     '''
     Choose episode
     '''
-    web_elements = driver.find_elements(By.CLASS_NAME, 'b-simple_episode__item')
+    episodes_lists = driver.find_elements(By.CLASS_NAME, 'b-simple_episodes__list')
+    
+    for episodes_list in episodes_lists:
+        if episodes_list.get_attribute('style') != 'display: none;':
+            web_elements = episodes_list.find_elements(By.CLASS_NAME, 'b-simple_episode__item')
     
     for web_element in web_elements:
         if web_element.text == episode:
             web_element.click()
+            sleep(1)
             return True
     
     return False
