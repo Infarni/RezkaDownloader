@@ -69,8 +69,8 @@ def get_video_url(driver: selenium.webdriver.Chrome) -> str:
     '''
     player_block = driver.find_element(By.ID, 'cdnplayer')
     player_block.click()
-    sleep(1)
 
+    driver.execute_script('window.performance.clearResourceTimings();')
     while True:
         url = driver.execute_script('return window.performance.getEntries();')[-1]
         name = url['name']

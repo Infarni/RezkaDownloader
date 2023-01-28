@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 from threading import Thread
 from time import sleep
 
@@ -9,6 +10,17 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 from handlers import config, rezka_api, video
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 def main():
@@ -23,7 +35,7 @@ def main():
     driver_options.add_argument('--headless=new')
     driver_options.add_argument('--mute-audio')
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-    driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
+    driver_options.add_extension(resource_path(os.path.join('extensions', 'Ublock Origin.crx')))
     
     driver = webdriver.Chrome(options=driver_options, service=ChromeService(ChromeDriverManager().install()))
     
@@ -34,13 +46,13 @@ def main():
         # Get to url
         driver.get(url)
         show_name = rezka_api.get_title(driver)
-        print(f'Show name: {show_name}')
+        print(f'\nShow name: {show_name}')
        
         # Get transtations
         translations = rezka_api.get_translations_list(driver)
         # Check translations exists
         if not translations is None:    
-            print('Translations:')
+            print('\nTranslations:')
             for index, translate in enumerate(translations):
                 print(f'{index + 1}. {translate}')
             # Choose transtation
@@ -56,7 +68,7 @@ def main():
             if not os.path.exists(show_path):
                 os.mkdir(show_path)
 
-            print('Seasons:')
+            print('\nSeasons:')
             for index, season in enumerate(seasons):
                 print(f'{index + 1}. {season}')
             # Choose season
@@ -69,7 +81,7 @@ def main():
         
         # Qualitys list
         qualitys = ['1080p', '720p', '480p', '360p']
-        print('Qualitys:')
+        print('\nQualitys:')
         for index, quality in enumerate(qualitys):
             print(f'{index + 1}. {quality}')
         # Choose quality
