@@ -18,7 +18,7 @@ Installation
     </li>
     </ul>
 <li>Install requirements Navigate to the repository folder <code>pip install -r requirements.txt</code></li>
-<ol>
+</ol>
 
 ___
 Run
