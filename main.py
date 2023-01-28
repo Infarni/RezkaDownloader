@@ -19,6 +19,7 @@ def main():
     # Create web driver
     driver_options = Options()
     driver_options.add_argument('--disable-gpu')
+    driver_options.add_argument('--log-level 3')
     driver_options.add_argument('--headless=new')
     driver_options.add_argument('--mute-audio')
     driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
