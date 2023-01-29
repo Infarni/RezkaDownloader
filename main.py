@@ -4,10 +4,9 @@ import sys
 from threading import Thread
 from time import sleep
 
+import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 
 from handlers import config, rezka_api, video
 
@@ -18,6 +17,7 @@ def main():
         os.mkdir(config.PATH)
     
     # Create web driver
+    chromedriver_autoinstaller.install()
     driver_options = Options()
     driver_options.add_argument('--disable-gpu')
     driver_options.add_argument('--log-level 3')
@@ -26,7 +26,7 @@ def main():
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
-    driver = webdriver.Chrome(options=driver_options, service=ChromeService(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(options=driver_options)
     
     # Main cycle
     while True:
