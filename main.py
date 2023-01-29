@@ -24,7 +24,7 @@ def main():
     driver_options.add_argument('--headless=new')
     driver_options.add_argument('--mute-audio')
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-    driver_options.add_extension(resource_path(os.path.join('extensions', 'Ublock Origin.crx')))
+    driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
     driver = webdriver.Chrome(options=driver_options, service=ChromeService(ChromeDriverManager().install()))
     
