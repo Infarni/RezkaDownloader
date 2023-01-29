@@ -7,6 +7,7 @@ from time import sleep
 import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 from handlers import config, rezka_api, video
 
@@ -25,7 +26,7 @@ def main():
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
-    driver = webdriver.Chrome(chromedriver_autoinstaller.install(), options=driver_options)
+    driver = webdriver.Chrome(service=Service(chromedriver_autoinstaller.install()), options=driver_options)
     
     # Main cycle
     while True:
