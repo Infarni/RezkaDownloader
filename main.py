@@ -17,7 +17,6 @@ def main():
         os.mkdir(config.PATH)
     
     # Create web driver
-    chromedriver_autoinstaller.install()
     driver_options = Options()
     driver_options.add_argument('--disable-gpu')
     driver_options.add_argument('--log-level 3')
@@ -26,7 +25,7 @@ def main():
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     driver_options.add_extension(os.path.join('extensions', 'Ublock Origin.crx'))
     
-    driver = webdriver.Chrome(options=driver_options)
+    driver = webdriver.Chrome(chromedriver_autoinstaller.install(), options=driver_options)
     
     # Main cycle
     while True:
