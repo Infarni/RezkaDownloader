@@ -1,2 +1,3 @@
+import os
 # Media path
-PATH='data'
+PATH=os.path.join(os.getcwd(), 'data')
