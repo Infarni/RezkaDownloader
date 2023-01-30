@@ -6,6 +6,7 @@ ___
 Installation
 ---
 <ol>
+<li>You must install Google Chrome</li>
 <li>Cloning this repo</li>
 <li>Create a virtual enviroment</li>
     <ul>

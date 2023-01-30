@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
-from handlers import config, rezka_api, video
+from handlers import config, rezka_api, file_handler
 
 
 def main():
@@ -25,9 +25,7 @@ def main():
     driver_options.add_argument('--mute-audio')
     driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     driver_options.add_extension(os.path.join(config.PATH_EXTESIONS, 'Ublock_Origin.crx'))
-    path_to_driver = ChromeDriverManager().install()
-    print(path_to_driver)
-    driver = webdriver.Chrome(service=Service('chromedriver'), options=driver_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=driver_options)
     
     # Main cycle
     while True:
@@ -90,16 +88,16 @@ def main():
                 video_url = rezka_api.get_video_url(driver)
                 
                 # Get video size
-                video_size = video.get_file_size(video_url)
+                video_size = file_handler.get_file_size(video_url)
                 video_local_size = 0
                 # Get file path
                 filename = os.path.join(season_path, f'{episode}.mp4')
                 # Create and run download thread
-                thread = Thread(target=video.download, args=(video_url, filename))
+                thread = Thread(target=file_handler.download, args=(video_url, filename))
                 thread.start()
                 # Download progress-bar
                 while video_size != video_local_size:
-                    video_local_size = video.get_local_video_size(filename)
+                    video_local_size = file_handler.get_local_file_size(filename)
                     print(f'Download video - {episode} ({video_local_size}/{video_size})', end='\r')
                     sleep(1)
                 print(f'Download video - {episode} ({video_local_size}/{video_size})')
@@ -107,16 +105,16 @@ def main():
             video_url = rezka_api.get_video_url(driver)
                 
             # Get video size
-            video_size = video.get_file_size(video_url)
+            video_size = file_handler.get_file_size(video_url)
             video_local_size = 0
             # Get file path
             filename = os.path.join(config.PATH, f'{show_name}.mp4')
             # Create and run download thread
-            thread = Thread(target=video.download, args=(video_url, filename))
+            thread = Thread(target=file_handler.download, args=(file_handler, filename))
             thread.start()
             # Download progress-bar
             while video_size != video_local_size:
-                video_local_size = video.get_local_video_size(filename)
+                video_local_size = file_handler.get_local_file_size(filename)
                 print(f'Download video - {show_name} ({video_local_size}/{video_size})', end='\r')
                 sleep(1)
             print(f'Download video - {show_name} ({video_local_size}/{video_size})')

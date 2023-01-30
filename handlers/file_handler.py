@@ -18,7 +18,7 @@ def get_file_size(url: str) -> str:
         return f'{size} GB'
 
 
-def get_local_video_size(path: str) -> str:
+def get_local_file_size(path: str) -> str:
     '''
     Get local file size
     '''
