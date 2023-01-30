@@ -110,7 +110,7 @@ def main():
             # Get file path
             filename = os.path.join(config.PATH, f'{show_name}.mp4')
             # Create and run download thread
-            thread = Thread(target=file_handler.download, args=(file_handler, filename))
+            thread = Thread(target=file_handler.download, args=(video_url, filename))
             thread.start()
             # Download progress-bar
             while video_size != video_local_size:
