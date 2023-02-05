@@ -12,14 +12,14 @@ class Rezka(selenium.webdriver.Chrome):
     url = 'https://rezka.ag'
 
 
-    def __init__(self, path_to_extesnion: str='Ublock_Origin.crx'):
+    def __init__(self, path_to_extension: str):
         self_options = Options()
         self_options.add_argument('--disable-gpu')
         self_options.add_argument('--log-level 3')
         self_options.add_argument('--headless=new')
         self_options.add_argument('--mute-audio')
         self_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        self_options.add_extension(os.path.join('extensions', 'Ublock_Origin.crx'))
+        self_options.add_extension(path_to_extension)
         
         super().__init__(options=self_options)
         

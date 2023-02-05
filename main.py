@@ -12,13 +12,24 @@ from selenium.webdriver.chrome.service import Service
 from handlers import config, rezka, file_handler
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def main():
     # Create data dir
     if not os.path.exists(config.PATH):
         os.mkdir(config.PATH)
     
     # Create web driver
-    driver = rezka.Rezka()
+    driver = rezka.Rezka(resource_path(os.path.join('extensions', 'Ublock_Origin.crx')))
     
     # Main cycle
     while True:
