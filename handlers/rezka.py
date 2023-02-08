@@ -6,6 +6,8 @@ import selenium
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Rezka(selenium.webdriver.Chrome):
@@ -21,7 +23,7 @@ class Rezka(selenium.webdriver.Chrome):
         self_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self_options.add_extension(path_to_extension)
         
-        super().__init__(options=self_options)
+        super().__init__(options=self_options, service=Service(ChromeDriverManager().install()))
         
         self.get(self.url)
     
